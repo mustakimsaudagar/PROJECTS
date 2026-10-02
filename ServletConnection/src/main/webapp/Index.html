@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Employee Registration</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 400px;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #667eea;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #5568d9;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Employee Registration</h2>
+
+        <form action="/ServletConnection/register" method="post">
+
+            <div class="form-group">
+                <label>Employee ID</label>
+                <input type="number" name="empId" placeholder="Enter Employee ID" required>
+            </div>
+
+            <div class="form-group">
+                <label>Employee Name</label>
+                <input type="text" name="empName" placeholder="Enter Employee Name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Employee Email</label>
+                <input type="email" name="email" placeholder="Enter Email Address" required>
+            </div>
+
+            <div class="form-group">
+                <label>Employee Salary</label>
+                <input type="number" name="salary" placeholder="Enter Salary" required>
+            </div>
+
+            <input class="submit-btn" type="submit" value="Register Employee">
+
+        </form>
+
+        <div class="footer">
+            Employee Management System
+        </div>
+
+    </div>
+
+</body>
+
+</html>
