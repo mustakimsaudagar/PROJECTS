@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In - Library Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="brand-icon">📚</div>
+        <h2 class="auth-title">Welcome to SmartLib</h2>
+        <p class="auth-subtitle">Sign in to your library account</p>
+      </div>
+
+      <div class="auth-body">
+        <!-- Quick Demo Credentials Box -->
+        <div class="demo-credentials-box">
+          <div class="demo-title">
+            <span>⚡ Quick Demo Credentials</span>
+          </div>
+          <p style="color: var(--gray-600); font-size: 0.75rem;">Click an account below to auto-fill:</p>
+          <div class="demo-btn-group">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="fillCredentials('admin', 'admin123')">
+              👑 Admin Account
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="fillCredentials('student', 'student123')">
+              🎓 Student Account
+            </button>
+          </div>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)">
+          <div class="form-group">
+            <label class="form-label" for="username">Username</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Enter username (e.g. admin or student)" required autofocus>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" id="loginBtn" class="btn btn-primary" style="width: 100%; padding: 0.75rem; margin-top: 0.5rem;">
+            Sign In to Account
+          </button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--gray-600);">
+          Don't have an account yet? <a href="register.html" style="font-weight: 600;">Register as Student</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    function fillCredentials(user, pass) {
+      document.getElementById('username').value = user;
+      document.getElementById('password').value = pass;
+      showToast(`Filled ${user} credentials`, 'info');
+    }
+
+    async function handleLoginSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      btn.textContent = 'Authenticating...';
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await API.auth.login({ username, password });
+        if (res.success) {
+          showToast(res.message, 'success');
+          setTimeout(() => {
+            window.location.href = res.redirect || 'index.html';
+          }, 400);
+        } else {
+          showToast(res.message || 'Login failed', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Sign In to Account';
+        }
+      } catch (err) {
+        showToast(err.message || 'Server connection error', 'error');
+        btn.disabled = false;
+        btn.textContent = 'Sign In to Account';
+      }
+    }
+  </script>
+</body>
+</html>

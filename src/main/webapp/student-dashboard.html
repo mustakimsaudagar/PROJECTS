@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal - SmartLib</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="student-dashboard.html" class="nav-brand">
+      <div class="brand-icon">🎓</div>
+      <span>SmartLib <small style="font-size: 0.75rem; color: var(--gray-600); font-weight: 500;">Student Portal</small></span>
+    </a>
+
+    <div class="nav-links">
+      <div class="nav-user">
+        <span>👤</span>
+        <span id="studentUserName">Student</span>
+        <span class="user-badge student">STUDENT</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Top Stats Row -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Currently Borrowed</h3>
+          <div class="stat-number" id="statActiveBorrowed">-</div>
+        </div>
+        <div class="stat-icon icon-indigo">📖</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Overdue Alerts</h3>
+          <div class="stat-number" id="statOverdueCount" style="color: var(--danger);">-</div>
+        </div>
+        <div class="stat-icon icon-red">⚠️</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Total Books Read</h3>
+          <div class="stat-number" id="statTotalHistory">-</div>
+        </div>
+        <div class="stat-icon icon-green">📚</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Accrued Fines</h3>
+          <div class="stat-number" id="statTotalFines">-</div>
+        </div>
+        <div class="stat-icon icon-amber">💰</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('tabCatalog', this)">
+        <span>🔍</span> Browse Catalog
+      </button>
+      <button class="tab-btn" onclick="switchTab('tabMyBorrowed', this)">
+        <span>📖</span> My Borrowed Books
+      </button>
+      <button class="tab-btn" onclick="switchTab('tabMyHistory', this)">
+        <span>📜</span> Reading History
+      </button>
+    </div>
+
+    <!-- TAB 1: BROWSE CATALOG -->
+    <div id="tabCatalog" class="tab-pane active">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Explore Library Catalog</h2>
+            <p style="font-size: 0.85rem; color: var(--gray-600);">Search for textbooks, reference manuals, and research publications</p>
+          </div>
+
+          <div class="filter-bar">
+            <input type="text" id="studentSearchInput" class="search-input" placeholder="Search by title, author, or ISBN..." oninput="StudentApp.loadCatalog()">
+            <select id="studentCategoryFilter" class="select-filter" onchange="StudentApp.loadCatalog()">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="studentBooksGrid" class="books-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: MY BORROWED BOOKS -->
+    <div id="tabMyBorrowed" class="tab-pane">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Currently Borrowed Books</h2>
+            <p style="font-size: 0.85rem; color: var(--gray-600);">Keep track of due dates and easily return books online</p>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Tx ID</th>
+                <th>Book Title</th>
+                <th>Checkout Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="myBorrowedTableBody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: READING HISTORY -->
+    <div id="tabMyHistory" class="tab-pane">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">My Complete Borrowing History</h2>
+            <p style="font-size: 0.85rem; color: var(--gray-600);">Your lifetime checkouts, returns, and library activity</p>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Tx ID</th>
+                <th>Book Title</th>
+                <th>Author</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Returned On</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="myHistoryTableBody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      StudentApp.init();
+    });
+  </script>
+</body>
+</html>

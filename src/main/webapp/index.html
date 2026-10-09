@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: #ffffff; min-height: 100vh;">
+
+  <nav class="navbar" style="background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1);">
+    <a href="index.html" class="nav-brand" style="color: #ffffff;">
+      <div class="brand-icon">📚</div>
+      <span>SmartLib</span>
+    </a>
+    <div class="nav-links">
+      <a href="login.html" class="btn btn-secondary btn-sm" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff;">Sign In</a>
+      <a href="register.html" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+  </nav>
+
+  <div class="container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; padding: 4rem 1.5rem;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(79, 70, 229, 0.2); border: 1px solid rgba(129, 140, 248, 0.4); padding: 0.4rem 1rem; border-radius: 9999px; margin-bottom: 1.5rem; font-size: 0.85rem; font-weight: 600; color: #a5b4fc;">
+      ✨ Full-Stack Java • Hibernate ORM • Servlets MVC • MySQL
+    </div>
+    
+    <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.15; margin-bottom: 1.5rem; max-width: 800px; background: linear-gradient(to right, #ffffff, #c7d2fe); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+      Modern, Intelligent Library Management System
+    </h1>
+    
+    <p style="font-size: 1.15rem; color: #94a3b8; max-width: 640px; margin-bottom: 2.5rem;">
+      Streamline book cataloging, automated checkout &amp; returns, real-time fine calculation, and student member access with enterprise-grade architecture.
+    </p>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3.5rem;">
+      <a href="login.html" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1rem; border-radius: 8px;">
+        🚀 Launch Dashboard
+      </a>
+      <a href="register.html" class="btn btn-secondary" style="padding: 0.85rem 2rem; font-size: 1rem; border-radius: 8px; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff;">
+        Register as Member
+      </a>
+    </div>
+
+    <!-- Quick Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; width: 100%; max-width: 960px; text-align: left;">
+      <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem;">
+        <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">⚡</div>
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: #fff;">Classic MVC Architecture</h3>
+        <p style="font-size: 0.85rem; color: #94a3b8;">Built with Java Servlets as Controllers, Hibernate 6 ORM as Model, and modern responsive HTML/CSS/JS Views.</p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem;">
+        <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">🛡️</div>
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: #fff;">Role-Based Access</h3>
+        <p style="font-size: 0.85rem; color: #94a3b8;">Distinct dashboards for Administrators (inventory, member management, rentals) and Students (catalog, borrowing, fines).</p>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem;">
+        <div style="font-size: 1.75rem; margin-bottom: 0.5rem;">💾</div>
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; color: #fff;">Atomic Database Schema</h3>
+        <p style="font-size: 0.85rem; color: #94a3b8;">Relational MySQL persistence with automatic stock tracking, foreign keys, and overdue fine computing.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.85rem; color: #64748b;">
+    Library Management System &bull; Java EE, Hibernate &amp; MySQL
+  </footer>
+</body>
+</html>

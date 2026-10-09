@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - SmartLib Management</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="admin-dashboard.html" class="nav-brand">
+      <div class="brand-icon">📚</div>
+      <span>SmartLib <small style="font-size: 0.75rem; color: var(--gray-600); font-weight: 500;">Admin Console</small></span>
+    </a>
+
+    <div class="nav-links">
+      <div class="nav-user">
+        <span>👤</span>
+        <span id="adminUserName">Admin</span>
+        <span class="user-badge admin">ADMIN</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Top Stats Row -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Total Titles</h3>
+          <div class="stat-number" id="statTotalTitles">-</div>
+        </div>
+        <div class="stat-icon icon-indigo">📚</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Total Copies</h3>
+          <div class="stat-number" id="statTotalCopies">-</div>
+        </div>
+        <div class="stat-icon icon-blue">📦</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Available Stock</h3>
+          <div class="stat-number" id="statAvailableCopies">-</div>
+        </div>
+        <div class="stat-icon icon-green">✅</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Active Loans</h3>
+          <div class="stat-number" id="statActiveLoans">-</div>
+        </div>
+        <div class="stat-icon icon-amber">🔄</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Overdue Alerts</h3>
+          <div class="stat-number" id="statOverdueCount" style="color: var(--danger);">-</div>
+        </div>
+        <div class="stat-icon icon-red">⚠️</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-info">
+          <h3>Total Members</h3>
+          <div class="stat-number" id="statTotalMembers">-</div>
+        </div>
+        <div class="stat-icon icon-blue">👥</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('tabBooks', this)">
+        <span>📖</span> Manage Books Catalog
+      </button>
+      <button class="tab-btn" onclick="switchTab('tabRentals', this)">
+        <span>🔄</span> Active Rentals &amp; Returns
+      </button>
+      <button class="tab-btn" onclick="switchTab('tabHistory', this)">
+        <span>📜</span> Transaction Audit Log
+      </button>
+      <button class="tab-btn" onclick="switchTab('tabMembers', this)">
+        <span>👥</span> Library Members
+      </button>
+    </div>
+
+    <!-- TAB 1: MANAGE BOOKS -->
+    <div id="tabBooks" class="tab-pane active">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Books Inventory</h2>
+            <p style="font-size: 0.85rem; color: var(--gray-600);">View, add, update, and manage available copies in the catalog</p>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <div class="filter-bar">
+              <input type="text" id="bookSearchInput" class="search-input" placeholder="Search by title, author, or ISBN..." oninput="AdminApp.loadBooks()">
+              <select id="categoryFilter" class="select-filter" onchange="AdminApp.loadBooks()">
+                <option value="">All Categories</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="AdminApp.openAddBook()">
+              <span>➕</span> Add New Book
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Category</th>
+                <th>Available Copies</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="booksTableBody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: ACTIVE RENTALS & RETURNS -->
+    <div id="tabRentals" class="tab-pane">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Active Borrowing Rentals</h2>
+            <p style="font-size: 0.85rem; color: var(--gray-600);">Monitor checked out books and handle return processing &amp; fines</p>
+          </div>
+
+          <button class="btn btn-primary" onclick="AdminApp.openIssueModal()">
+            <span>➕</span> Issue Book to Member
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Tx ID</th>
+                <th>Book Title</th>
+                <th>Borrowed By</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="activeRentalsTableBody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: TRANSACTION AUDIT LOG -->
+    <div id="tabHistory" class="tab-pane">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">All Library Transactions</h2>
+            <p style="font-size: 0.85rem; color: var(--gray-600);">Historical record of all issued, returned, and overdue transactions</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="AdminApp.loadAllTransactions()">🔄 Refresh</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Tx ID</th>
+                <th>Book Title</th>
+                <th>Member</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+                <th>Fine Paid</th>
+              </tr>
+            </thead>
+            <tbody id="allTransactionsTableBody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: LIBRARY MEMBERS -->
+    <div id="tabMembers" class="tab-pane">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Registered Library Members</h2>
+            <p style="font-size: 0.85rem; color: var(--gray-600);">List of students and administrators enrolled in the system</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="AdminApp.loadMembers()">🔄 Refresh</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Member ID</th>
+                <th>Full Name</th>
+                <th>Username</th>
+                <th>Email Address</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="membersTableBody">
+              <!-- Populated dynamically via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- ADD BOOK MODAL -->
+  <div id="addBookModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add New Book to Catalog</h3>
+        <button class="modal-close" onclick="closeModal('addBookModal')">&times;</button>
+      </div>
+      <form id="addBookForm" onsubmit="AdminApp.submitAddBook(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="addTitle">Book Title *</label>
+            <input type="text" id="addTitle" name="title" class="form-control" placeholder="e.g. Clean Architecture" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="addAuthor">Author *</label>
+              <input type="text" id="addAuthor" name="author" class="form-control" placeholder="e.g. Robert C. Martin" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="addCategory">Category *</label>
+              <input type="text" id="addCategory" name="category" class="form-control" placeholder="e.g. Computer Science" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="addIsbn">ISBN *</label>
+              <input type="text" id="addIsbn" name="isbn" class="form-control" placeholder="e.g. 978-0134494166" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="addQuantity">Quantity (Copies) *</label>
+              <input type="number" id="addQuantity" name="quantity" class="form-control" value="5" min="1" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="addPublisher">Publisher</label>
+              <input type="text" id="addPublisher" name="publisher" class="form-control" placeholder="e.g. Prentice Hall">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="addPublicationYear">Year</label>
+              <input type="number" id="addPublicationYear" name="publicationYear" class="form-control" placeholder="2017">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('addBookModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT BOOK MODAL -->
+  <div id="editBookModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Book Details</h3>
+        <button class="modal-close" onclick="closeModal('editBookModal')">&times;</button>
+      </div>
+      <form id="editBookForm" onsubmit="AdminApp.submitEditBook(event)">
+        <input type="hidden" name="id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Book Title *</label>
+            <input type="text" name="title" class="form-control" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Author *</label>
+              <input type="text" name="author" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <input type="text" name="category" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ISBN *</label>
+              <input type="text" name="isbn" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Total Quantity</label>
+              <input type="number" name="quantity" class="form-control" min="1" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Publisher</label>
+              <input type="text" name="publisher" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Publication Year</label>
+              <input type="number" name="publicationYear" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('editBookModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Update Book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ISSUE BOOK MODAL -->
+  <div id="issueBookModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Issue Book to Member</h3>
+        <button class="modal-close" onclick="closeModal('issueBookModal')">&times;</button>
+      </div>
+      <form id="issueBookForm" onsubmit="AdminApp.submitIssueBook(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="issueStudentSelect">Select Member *</label>
+            <select id="issueStudentSelect" name="userId" class="form-control" required></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="issueBookSelect">Select Available Book *</label>
+            <select id="issueBookSelect" name="bookId" class="form-control" required></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="issueDays">Loan Period (Days)</label>
+            <select id="issueDays" name="days" class="form-control">
+              <option value="7">7 Days (1 Week)</option>
+              <option value="14" selected>14 Days (2 Weeks)</option>
+              <option value="30">30 Days (1 Month)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="issueRemarks">Remarks / Notes</label>
+            <input type="text" id="issueRemarks" name="remarks" class="form-control" placeholder="e.g. Academic project reference">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('issueBookModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Complete Checkout</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- RETURN BOOK MODAL -->
+  <div id="returnBookModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Process Book Return</h3>
+        <button class="modal-close" onclick="closeModal('returnBookModal')">&times;</button>
+      </div>
+      <form id="returnBookForm" onsubmit="AdminApp.submitReturnBook(event)">
+        <input type="hidden" name="transactionId">
+        <div class="modal-body">
+          <div style="background: var(--gray-50); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem;">
+            <div><strong>Book:</strong> <span id="returnBookTitle"></span></div>
+            <div style="margin-top: 0.25rem;"><strong>Borrowed by:</strong> <span id="returnUserName"></span></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="returnFineAmount">Fine Collected ($)</label>
+            <input type="number" step="0.5" id="returnFineAmount" name="finePaid" class="form-control" placeholder="0.00">
+            <small style="color: var(--gray-600);">Rate: $2.00 per overdue day. You may adjust or waive the fee if justified.</small>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="returnRemarks">Return Remarks</label>
+            <input type="text" id="returnRemarks" name="remarks" class="form-control" placeholder="e.g. Returned in good condition">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('returnBookModal')">Cancel</button>
+          <button type="submit" class="btn btn-success">Confirm Book Return</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      AdminApp.init();
+    });
+  </script>
+</body>
+</html>
